@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Java Servlet Interactive Explorer - See what happens when a browser request travels through a Java Servlet. An interactive visual guide for beginners.">
+  <title>Java Servlet Interactive Explorer | Visual Learning Journey</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="theme-dark beginner-mode-active">
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+  <!-- Canvas for cinematic energy wall & particle VFX -->
+  <canvas id="fx-canvas" class="fx-canvas" aria-hidden="true"></canvas>
+
+  <!-- Global Header -->
+  <header class="app-header" role="banner">
+    <div class="header-container">
+      <div class="brand">
+        <a href="#landing-section" class="brand-link" id="brand-home-btn" aria-label="Java Servlet Interactive Explorer Home">
+          <span class="brand-icon">☕</span>
+          <div class="brand-text">
+            <span class="brand-title">SERVLET<span class="text-accent-red">.IO</span></span>
+            <span class="brand-sub">INTERACTIVE EXPLORER</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Quick Search Bar -->
+      <div class="header-search">
+        <button id="search-trigger-btn" class="search-trigger" aria-label="Search Servlet concepts (Press Ctrl+K)">
+          <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <span class="search-placeholder">Search concepts...</span>
+          <kbd class="search-kbd">Ctrl K</kbd>
+        </button>
+      </div>
+
+      <!-- Controls & Preferences -->
+      <div class="header-actions">
+        <!-- Beginner Mode Toggle -->
+        <button id="toggle-beginner-btn" class="btn-toggle active" aria-pressed="true" title="Toggle Beginner Mode (Simpler explanations & hints)">
+          <span class="toggle-icon">🎓</span>
+          <span class="toggle-label">Beginner Mode: <strong id="beginner-status-label">ON</strong></span>
+        </button>
+
+        <!-- Reduce Motion Toggle -->
+        <button id="toggle-motion-btn" class="btn-toggle" aria-pressed="false" title="Reduce motion and disable heavy animations">
+          <span class="toggle-icon">⚡</span>
+          <span class="toggle-label">Motion: <strong id="motion-status-label">Full</strong></span>
+        </button>
+
+        <!-- Sound Toggle & Master Volume -->
+        <div class="audio-control-group">
+          <button id="toggle-audio-btn" class="btn-icon" aria-pressed="false" aria-label="Toggle Sound Effects" title="Sound Effects (Synthesized chimes)">
+            <span id="audio-icon">🔇</span>
+          </button>
+          <div class="volume-slider-wrap" id="volume-slider-wrap" title="Master Sound Volume">
+            <input type="range" id="volume-slider" min="0" max="100" value="70" aria-label="Master Sound Volume" class="volume-slider">
+          </div>
+        </div>
+
+        <!-- Achievements Button -->
+        <button id="open-achievements-btn" class="btn-badge" aria-label="View Achievements" title="Unlocked Achievements">
+          <span class="badge-icon">🏆</span>
+          <span id="achievements-counter" class="badge-counter">0/6</span>
+        </button>
+
+        <!-- Reset Progress Button -->
+        <button id="reset-progress-btn" class="btn-icon btn-reset" aria-label="Reset Learning Progress" title="Reset Learning Progress">
+          <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Interactive Journey Progress Stepper -->
+    <nav class="journey-nav" aria-label="Servlet Learning Journey">
+      <div class="journey-container">
+        <div class="journey-summary">
+          <span class="journey-heading">YOUR SERVLET JOURNEY</span>
+          <div class="journey-stats">
+            <span id="journey-completion-text">0% Complete</span>
+            <div class="progress-bar-track">
+              <div id="journey-progress-fill" class="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <ol class="journey-steps" id="journey-steps-list">
+          <li class="step-item active" data-target="section-basics">
+            <button class="step-btn" aria-current="step">
+              <span class="step-num">01</span>
+              <span class="step-name">Basics</span>
+              <span class="step-status">●</span>
+            </button>
+          </li>
+          <li class="step-item" data-target="section-request-response">
+            <button class="step-btn">
+              <span class="step-num">02</span>
+              <span class="step-name">Req / Resp</span>
+              <span class="step-status">○</span>
+            </button>
+          </li>
+          <li class="step-item" data-target="section-lifecycle">
+            <button class="step-btn">
+              <span class="step-num">03</span>
+              <span class="step-name">Lifecycle</span>
+              <span class="step-status">○</span>
+            </button>
+          </li>
+          <li class="step-item" data-target="section-get-post">
+            <button class="step-btn">
+              <span class="step-num">04</span>
+              <span class="step-name">GET / POST</span>
+              <span class="step-status">○</span>
+            </button>
+          </li>
+          <li class="step-item" data-target="section-mapping">
+            <button class="step-btn">
+              <span class="step-num">05</span>
+              <span class="step-name">Mapping</span>
+              <span class="step-status">○</span>
+            </button>
+          </li>
+          <li class="step-item" data-target="section-session">
+            <button class="step-btn">
+              <span class="step-num">06</span>
+              <span class="step-name">Session Lab</span>
+              <span class="step-status">○</span>
+            </button>
+          </li>
+          <li class="step-item" data-target="section-jsp">
+            <button class="step-btn">
+              <span class="step-num">07</span>
+              <span class="step-name">JSP vs Servlet</span>
+              <span class="step-status">○</span>
+            </button>
+          </li>
+          <li class="step-item" data-target="section-jdbc">
+            <button class="step-btn">
+              <span class="step-num">08</span>
+              <span class="step-name">JDBC Flow</span>
+              <span class="step-status">○</span>
+            </button>
+          </li>
+          <li class="step-item" data-target="section-code-explorer">
+            <button class="step-btn">
+              <span class="step-num">09</span>
+              <span class="step-name">Code Explorer</span>
+              <span class="step-status">○</span>
+            </button>
+          </li>
+          <li class="step-item" data-target="section-challenges">
+            <button class="step-btn">
+              <span class="step-num">10</span>
+              <span class="step-name">Challenges</span>
+              <span class="step-status">○</span>
+            </button>
+          </li>
+        </ol>
+      </div>
+    </nav>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main id="main-content">
+
+    <!-- ========================================================
+         LANDING HERO SECTION
+         ======================================================== -->
+    <section id="landing-section" class="landing-section" aria-labelledby="landing-title">
+      <div class="landing-bg-glow" aria-hidden="true"></div>
+      <div class="landing-container">
+        <div class="landing-content">
+          <div class="landing-badge">
+            <span class="pulse-dot"></span>
+            EDUCATIONAL INTERACTIVE SIMULATION
+          </div>
+          <h1 id="landing-title" class="landing-heading">
+            JAVA SERVLET<br>
+            <span class="text-gradient-hero">INTERACTIVE EXPLORER</span>
+          </h1>
+          <p class="landing-tagline">
+            "See what happens when a browser request travels through a Java Servlet."
+          </p>
+          <p class="landing-desc">
+            An interactive visual guide to understanding Servlet requests, responses, lifecycle stages, and web container architecture — built specifically for beginners.
+          </p>
+
+          <div class="landing-actions">
+            <button id="start-journey-btn" class="btn-hero-primary" aria-label="Start Servlet Journey">
+              <span class="btn-sparkle" aria-hidden="true"></span>
+              <span class="btn-text">START SERVLET JOURNEY</span>
+              <span class="btn-arrow" aria-hidden="true">→</span>
+            </button>
+            <button id="open-guide-btn" class="btn-hero-guide" aria-label="Open How to Use This Project Guide">
+              <span class="icon">📖</span> HOW TO USE THIS PROJECT
+            </button>
+            <a href="#section-request-response" class="btn-hero-secondary">
+              <span class="icon">⚡</span> Jump to Live Request Flow
+            </a>
+          </div>
+
+          <div class="landing-features-pills">
+            <div class="pill-item"><span class="pill-icon">🌐</span> Visual Request Flow</div>
+            <div class="pill-item"><span class="pill-icon">🔄</span> 6-Stage Lifecycle Rings</div>
+            <div class="pill-item"><span class="pill-icon">🎮</span> GET vs POST Mini-Game</div>
+            <div class="pill-item"><span class="pill-icon">🍪</span> Session & Cookie Lab</div>
+          </div>
+        </div>
+
+        <div class="landing-visual">
+          <div class="developer-illustration-card">
+            <div class="card-ambient-halo" aria-hidden="true"></div>
+            <img src="assets/images/developer-hero.png" alt="Developer coding at computer with glowing IDE screens" class="developer-img" loading="eager">
+            <div class="tech-floating-tag tag-servlet">
+              <span class="tag-dot"></span> <code>@WebServlet("/hello")</code>
+            </div>
+            <div class="tech-floating-tag tag-request">
+              <span class="tag-dot"></span> <code>HttpServletRequest</code>
+            </div>
+            <div class="tech-floating-tag tag-tomcat">
+              <span class="tag-dot"></span> <code>Apache Tomcat Container</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Global Notice Banner for Honest Educational Simulation -->
+    <div class="simulation-banner" role="status">
+      <div class="banner-inner">
+        <span class="banner-icon">ℹ️</span>
+        <span class="banner-text">
+          <strong>EDUCATIONAL SIMULATION:</strong> This is a conceptual browser simulation designed to teach Java Servlets visually. No real Java runtime, Apache Tomcat instance, or MySQL server is running in your browser.
+        </span>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         SECTION 1: SERVLET BASICS
+         ======================================================== -->
+    <section id="section-basics" class="learning-section" aria-labelledby="basics-heading">
+      <div class="section-header">
+        <div class="section-tag"><span class="tag-num">01</span> BASICS</div>
+        <h2 id="basics-heading" class="section-title">What is a Java Servlet?</h2>
+        <p class="section-subtitle">The fundamental building block of server-side Java web development.</p>
+      </div>
+
+      <div class="basics-grid">
+        <!-- Card 1: What is it? -->
+        <article class="concept-card highlight-purple">
+          <div class="card-header">
+            <div class="card-icon-badge">☕</div>
+            <h3>WHAT IS IT?</h3>
+          </div>
+          <div class="card-body">
+            <p class="beginner-text">
+              A <strong>Java Servlet</strong> is a Java class that lives on a web server. When you click a link or submit a form in your browser, the Servlet wakes up, reads your request, computes data, and sends back a response (HTML page, JSON data, or file).
+            </p>
+            <p class="technical-text" hidden>
+              A Servlet is a Java technology managed by a <code>ServletContainer</code> implementing the Jakarta/Java EE Servlet specification (e.g., <code>jakarta.servlet.http.HttpServlet</code>). It provides component-based, platform-independent server extension capabilities without vendor lock-in.
+            </p>
+            <div class="real-world-analogy">
+              <span class="analogy-label">💡 REAL-WORLD ANALOGY:</span>
+              Think of a Servlet like a <strong>receptionist at an office desk</strong>. Visitors (browser requests) arrive, the receptionist reads their form, grabs what they need from the back office, and hands them an answer ticket.
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2: Why do we use it? -->
+        <article class="concept-card highlight-red">
+          <div class="card-header">
+            <div class="card-icon-badge">⚡</div>
+            <h3>WHY DO WE USE IT?</h3>
+          </div>
+          <div class="card-body">
+            <p class="beginner-text">
+              Before Servlets, servers used <strong>CGI (Common Gateway Interface)</strong>. Every single visitor started a heavy new operating system process, freezing servers when hundreds visited! Servlets fixed this by using <strong>lightweight threads inside one single Java process</strong>.
+            </p>
+            <p class="technical-text" hidden>
+              CGI spawned an OS-level process per request incurring significant fork/exec overhead. In contrast, Servlets execute within a persistent JVM process using a pooled multithreaded architecture (thread-per-request model), achieving orders-of-magnitude lower memory consumption and response latency.
+            </p>
+            <div class="comparison-pill-row">
+              <span class="pill-bad">❌ CGI: 1000 visitors = 1000 OS processes (Server crashes)</span>
+              <span class="pill-good">✓ Servlet: 1000 visitors = 1000 lightweight threads in 1 JVM</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3: What is a Servlet Container? -->
+        <article class="concept-card highlight-cyan">
+          <div class="card-header">
+            <div class="card-icon-badge">⚙️</div>
+            <h3>WHAT IS A SERVLET CONTAINER?</h3>
+          </div>
+          <div class="card-body">
+            <p class="beginner-text">
+              A Servlet cannot run by itself like a normal Java <code>main()</code> program. It needs a <strong>Servlet Container</strong> (such as <strong>Apache Tomcat</strong> or <strong>Jetty</strong>) to manage its entire life, listen on network ports, handle security, and route requests to it.
+            </p>
+            <p class="technical-text" hidden>
+              The Servlet Container (Web Container) is the runtime environment implementing the Servlet API contract. It handles TCP/IP socket listening, HTTP request header parsing, thread pooling, session persistence, security constraints, and delegates to the appropriate <code>Servlet</code> instance via mapping descriptors.
+            </p>
+            <div class="real-world-analogy">
+              <span class="analogy-label">🏢 REAL-WORLD EXAMPLE:</span>
+              <strong>Apache Tomcat</strong> is the most famous open-source Servlet Container in the world. It provides the house where your Servlets live.
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Interactive Learn More Accordion -->
+      <div class="learn-more-box">
+        <button class="learn-more-toggle" aria-expanded="false" aria-controls="basics-extra-details">
+          <span>📚 Click to Explore: Standard Java (main) vs Java Servlet</span>
+          <span class="accordion-arrow">▼</span>
+        </button>
+        <div id="basics-extra-details" class="accordion-panel" hidden>
+          <div class="table-responsive">
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>Standard Java Application</th>
+                  <th>Java Servlet Application</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Entry Point</strong></td>
+                  <td><code>public static void main(String[] args)</code></td>
+                  <td>Managed by Container: <code>init()</code>, <code>service()</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Who controls it?</strong></td>
+                  <td>You / OS / Command line</td>
+                  <td>Servlet Container (e.g. Apache Tomcat)</td>
+                </tr>
+                <tr>
+                  <td><strong>Execution Mode</strong></td>
+                  <td>Runs from top to bottom, then terminates</td>
+                  <td>Stays loaded in server memory, responding to requests</td>
+                </tr>
+                <tr>
+                  <td><strong>Protocol</strong></td>
+                  <td>Console / GUI (Swing, JavaFX) / Custom sockets</td>
+                  <td>HTTP / HTTPS web protocol</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-next-cta">
+        <button class="btn-advance" data-next="section-request-response">
+          Next Step: Watch a Live Request Flow →
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         SECTION 2: SIGNATURE REQUEST / RESPONSE SIMULATION
+         ======================================================== -->
+    <section id="section-request-response" class="learning-section" aria-labelledby="req-resp-heading">
+      <div class="section-header">
+        <div class="section-tag"><span class="tag-num">02</span> SIGNATURE SIMULATION</div>
+        <h2 id="req-resp-heading" class="section-title">The Complete Request / Response Journey</h2>
+        <p class="section-subtitle">Watch an HTTP request travel from the browser, through Tomcat and the Servlet, and see the response return.</p>
+      </div>
+
+      <!-- Interactive Request Builder Card -->
+      <div class="builder-console">
+        <div class="console-header">
+          <div class="console-title">
+            <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
+            <strong>HTTP REQUEST BUILDER</strong> — Configure and Dispatch
+          </div>
+          <span class="console-badge">Interactive Simulation</span>
+        </div>
+
+        <div class="builder-grid">
+          <!-- HTTP Method -->
+          <div class="builder-field">
+            <label for="req-method-select">HTTP METHOD:</label>
+            <select id="req-method-select" class="form-control select-method">
+              <option value="GET" selected>GET (Read Data / Query)</option>
+              <option value="POST">POST (Submit Data / Body)</option>
+            </select>
+          </div>
+
+          <!-- URL Path -->
+          <div class="builder-field">
+            <label for="req-url-select">TARGET URL ROUTE:</label>
+            <select id="req-url-select" class="form-control">
+              <option value="/hello" selected>/hello (HelloServlet)</option>
+              <option value="/login">/login (LoginServlet)</option>
+              <option value="/products">/products (CatalogServlet)</option>
+              <option value="/users">/users (UserServlet)</option>
+              <option value="/missing-page">/missing-page (Unmapped Route - 404)</option>
+            </select>
+          </div>
+
+          <!-- Parameter Value -->
+          <div class="builder-field">
+            <label for="req-param-input">QUERY / BODY PARAMETER:</label>
+            <input type="text" id="req-param-input" class="form-control" value="name=Prasanth" placeholder="e.g. name=Prasanth">
+          </div>
+
+          <!-- Dispatch Action Button -->
+          <div class="builder-field builder-action">
+            <button id="send-request-btn" class="btn-send-packet" aria-label="Send HTTP Request through Servlet Architecture">
+              <span class="btn-packet-icon">📨</span>
+              <span class="btn-label">SEND REQUEST</span>
+              <span class="btn-ripple"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Animation Controls Bar -->
+        <div class="simulation-controls">
+          <div class="ctrl-group">
+            <span class="ctrl-label">MODE:</span>
+            <button id="sim-mode-auto" class="btn-chip active" aria-pressed="true">Auto-Play Flow</button>
+            <button id="sim-mode-step" class="btn-chip" aria-pressed="false">Step-by-Step</button>
+            <button id="sim-step-next-btn" class="btn-chip btn-step-trigger" disabled>Next Step ⏭️</button>
+          </div>
+
+          <div class="ctrl-group">
+            <span class="ctrl-label">SPEED:</span>
+            <button class="btn-chip speed-btn" data-speed="slow">Slow</button>
+            <button class="btn-chip speed-btn active" data-speed="normal">Normal</button>
+            <button class="btn-chip speed-btn" data-speed="fast">Fast</button>
+          </div>
+
+          <div class="ctrl-group">
+            <button id="sim-reset-flow-btn" class="btn-chip btn-reset-flow">Reset Visual</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Generated Wire Preview -->
+      <div class="wire-preview-box">
+        <div class="preview-item">
+          <span class="preview-badge">Outgoing HTTP Packet:</span>
+          <code id="wire-request-preview" class="wire-code">GET /hello?name=Prasanth HTTP/1.1 (Host: localhost:8080)</code>
+        </div>
+        <div class="preview-item">
+          <span class="preview-badge">Expected Response:</span>
+          <code id="wire-response-preview" class="wire-code">HTTP/1.1 200 OK (Content-Type: text/html)</code>
+        </div>
+        <div class="packet-preview-showcase">
+          <img src="assets/images/bubble-energy.png" alt="Holographic request energy packet" class="bubble-energy-thumb">
+          <span class="bubble-energy-tag">Simulated Energy Packet Visual</span>
+        </div>
+      </div>
+
+      <!-- VISUAL 10-NODE PIPELINE ARCHITECTURE -->
+      <div class="pipeline-container" id="pipeline-container" aria-label="10-node Servlet Architecture Diagram">
+        <!-- SVG Canvas for dynamic laser paths -->
+        <svg class="pipeline-svg-overlay" id="pipeline-svg" aria-hidden="true"></svg>
+
+        <!-- Moving Packet Element -->
+        <div id="flying-packet" class="flying-packet" aria-hidden="true">
+          <div class="packet-core"></div>
+          <div class="packet-glow"></div>
+          <div class="packet-aura"></div>
+          <span class="packet-tag" id="flying-packet-tag">GET</span>
+        </div>
+
+        <div class="nodes-wrapper">
+          <!-- Node 1: Browser -->
+          <div class="arch-node" id="node-1" data-node="browser" tabindex="0" role="button" aria-label="Node 1: Browser">
+            <div class="node-glow-ring"></div>
+            <div class="node-icon">🌐</div>
+            <div class="node-title">Browser</div>
+            <div class="node-role">Client</div>
+            <div class="node-hint">Click for details</div>
+          </div>
+
+          <div class="arch-arrow forward" id="arrow-1-2" aria-hidden="true">➔</div>
+
+          <!-- Node 2: HTTP Request -->
+          <div class="arch-node" id="node-2" data-node="http-request" tabindex="0" role="button" aria-label="Node 2: HTTP Request">
+            <div class="node-glow-ring"></div>
+            <div class="node-icon">📨</div>
+            <div class="node-title">HTTP Request</div>
+            <div class="node-role">Network Packet</div>
+            <div class="node-hint">Click for details</div>
+          </div>
+
+          <div class="arch-arrow forward" id="arrow-2-3" aria-hidden="true">➔</div>
+
+          <!-- Node 3: Servlet Container -->
+          <div class="arch-node highlight-container" id="node-3" data-node="container" tabindex="0" role="button" aria-label="Node 3: Servlet Container (Tomcat)">
+            <div class="node-glow-ring"></div>
+            <div class="node-icon">⚙️</div>
+            <div class="node-title">Servlet Container</div>
+            <div class="node-role">Apache Tomcat</div>
+            <div class="node-hint">Click for details</div>
+          </div>
+
+          <div class="arch-arrow forward" id="arrow-3-4" aria-hidden="true">➔</div>
+
+          <!-- Node 4: Servlet Mapping -->
+          <div class="arch-node" id="node-4" data-node="mapping" tabindex="0" role="button" aria-label="Node 4: Servlet Mapping">
+            <div class="node-glow-ring"></div>
+            <div class="node-icon">🎯</div>
+            <div class="node-title">Servlet Mapping</div>
+            <div class="node-role">@WebServlet Router</div>
+            <div class="node-hint">Click for details</div>
+          </div>
+
+          <div class="arch-arrow forward" id="arrow-4-5" aria-hidden="true">➔</div>
+
+          <!-- Node 5: Servlet Class -->
+          <div class="arch-node" id="node-5" data-node="servlet" tabindex="0" role="button" aria-label="Node 5: Servlet Instance">
+            <div class="node-glow-ring"></div>
+            <div class="node-icon">☕</div>
+            <div class="node-title">Servlet Instance</div>
+            <div class="node-role">HelloServlet.class</div>
+            <div class="node-hint">Click for details</div>
+          </div>
+
+          <div class="arch-arrow forward" id="arrow-5-6" aria-hidden="true">➔</div>
+
+          <!-- Node 6: service() -->
+          <div class="arch-node" id="node-6" data-node="service" tabindex="0" role="button" aria-label="Node 6: service() Method">
+            <div class="node-glow-ring"></div>
+            <div class="node-icon">⚡</div>
+            <div class="node-title">service()</div>
+            <div class="node-role">Method Dispatcher</div>
+            <div class="node-hint">Click for details</div>
+          </div>
+
+          <div class="arch-arrow forward" id="arrow-7-8" aria-hidden="true">➔</div>
+
+          <!-- Node 7: doGet / doPost -->
+          <div class="arch-node" id="node-7" data-node="doget-dopost" tabindex="0" role="button" aria-label="Node 7: doGet() or doPost()">
+            <div class="node-glow-ring"></div>
+            <div class="node-icon">🔀</div>
+            <div class="node-title" id="node-7-title">doGet()</div>
+            <div class="node-role">HTTP Worker</div>
+            <div class="node-hint">Click for details</div>
+          </div>
+
+          <div class="arch-arrow forward" id="arrow-7-8b" aria-hidden="true">➔</div>
+
+          <!-- Node 8: Business Logic -->
+          <div class="arch-node" id="node-8" data-node="logic" tabindex="0" role="button" aria-label="Node 8: Business Logic">
+            <div class="node-glow-ring"></div>
+            <div class="node-icon">💻</div>
+            <div class="node-title">Business Logic</div>
+            <div class="node-role">Data & Computation</div>
+            <div class="node-hint">Click for details</div>
+          </div>
+
+          <div class="arch-arrow backward" id="arrow-8-9" aria-hidden="true">➔</div>
+
+          <!-- Node 9: HTTP Response -->
+          <div class="arch-node" id="node-9" data-node="http-response" tabindex="0" role="button" aria-label="Node 9: HTTP Response">
+            <div class="node-glow-ring"></div>
+            <div class="node-icon">📤</div>
+            <div class="node-title">HTTP Response</div>
+            <div class="node-role">Status 200 OK + Body</div>
+            <div class="node-hint">Click for details</div>
+          </div>
+
+          <div class="arch-arrow backward" id="arrow-9-10" aria-hidden="true">➔</div>
+
+          <!-- Node 10: Browser (Render) -->
+          <div class="arch-node" id="node-10" data-node="browser-render" tabindex="0" role="button" aria-label="Node 10: Browser View Render">
+            <div class="node-glow-ring"></div>
+            <div class="node-icon">🖥️</div>
+            <div class="node-title">Browser Render</div>
+            <div class="node-role">HTML / UI Display</div>
+            <div class="node-hint">Click for details</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIVE STEP INSPECTOR & DEVELOPER CONSOLE -->
+      <div class="inspector-console">
+        <div class="inspector-head">
+          <div class="head-left">
+            <span class="live-dot pulse"></span>
+            <strong>LIVE STEP INSPECTOR:</strong>
+            <span id="current-step-title" class="step-badge">Ready to Dispatch</span>
+          </div>
+          <div class="head-right">
+            <span class="step-counter-tag" id="step-counter-text">Step 0 of 10</span>
+          </div>
+        </div>
+
+        <div class="inspector-body">
+          <div class="inspector-col explanation-col">
+            <h4 class="col-title">What is happening at this microsecond?</h4>
+            <div id="inspector-explanation" class="explanation-box">
+              Click <strong>"SEND REQUEST"</strong> above to see the packet travel through each layer of the Java web server architecture!
+            </div>
+            <div id="inspector-analogy" class="analogy-box">
+              💡 <strong>Beginner Tip:</strong> The Browser never talks directly to your Java code. It talks across the network to Apache Tomcat, which prepares the <code>HttpServletRequest</code> object for you!
+            </div>
+          </div>
+
+          <div class="inspector-col code-trace-col">
+            <h4 class="col-title">JVM & Container Code Execution Trace</h4>
+            <pre class="code-terminal"><code id="inspector-code-trace">// Waiting for incoming HTTP request...
+// Server socket listening on port 8080.</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-next-cta">
+        <button class="btn-advance" data-next="section-lifecycle">
+          Next Step: Master the 6-Stage Servlet Lifecycle →
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         SECTION 3: SERVLET LIFECYCLE
+         ======================================================== -->
+    <section id="section-lifecycle" class="learning-section" aria-labelledby="lifecycle-heading">
+      <div class="section-header">
+        <div class="section-tag"><span class="tag-num">03</span> LIFECYCLE</div>
+        <h2 id="lifecycle-heading" class="section-title">The Servlet Lifecycle Rings</h2>
+        <p class="section-subtitle">A Servlet is born, serves thousands of visitors, and gracefully retires. See the 6 stages in action.</p>
+      </div>
+
+      <!-- Lifecycle Stages Rings Showcase Banner -->
+      <div class="lifecycle-banner-showcase">
+        <img src="assets/images/lifecycle-rings.png" alt="6 glowing circular portal rings representing Servlet lifecycle stages" class="lifecycle-banner-img">
+        <span class="banner-caption">6 Lifecycle Portal Stages: Loading, Instantiation, init(), service(), doGet()/doPost(), destroy()</span>
+      </div>
+
+      <!-- Lifecycle Visual Ring Stage Grid -->
+      <div class="lifecycle-stage-grid">
+        <!-- Stage 1 -->
+        <div class="lifecycle-card" id="life-card-1" data-stage="1">
+          <div class="card-ring-wrapper">
+            <div class="ring-vfx-circle ring-cyan"></div>
+            <span class="ring-step-num">1</span>
+          </div>
+          <div class="life-content">
+            <h3 class="life-title">1. Class Loading</h3>
+            <span class="life-freq-badge freq-once">ONCE ONLY</span>
+            <p class="life-desc">Tomcat searches for <code>HelloServlet.class</code> and loads the bytecode into JVM memory.</p>
+          </div>
+          <div class="life-check" aria-hidden="true">✓</div>
+        </div>
+
+        <!-- Stage 2 -->
+        <div class="lifecycle-card" id="life-card-2" data-stage="2">
+          <div class="card-ring-wrapper">
+            <div class="ring-vfx-circle ring-purple"></div>
+            <span class="ring-step-num">2</span>
+          </div>
+          <div class="life-content">
+            <h3 class="life-title">2. Instantiation</h3>
+            <span class="life-freq-badge freq-once">ONCE ONLY</span>
+            <p class="life-desc">Tomcat calls the default constructor <code>new HelloServlet()</code> to create the single instance in memory.</p>
+          </div>
+          <div class="life-check" aria-hidden="true">✓</div>
+        </div>
+
+        <!-- Stage 3 -->
+        <div class="lifecycle-card" id="life-card-3" data-stage="3">
+          <div class="card-ring-wrapper">
+            <div class="ring-vfx-circle ring-gold"></div>
+            <span class="ring-step-num">3</span>
+          </div>
+          <div class="life-content">
+            <h3 class="life-title">3. init()</h3>
+            <span class="life-freq-badge freq-once">ONCE ONLY</span>
+            <p class="life-desc">Tomcat passes <code>ServletConfig</code>. Initializes database pools, config files, or external services.</p>
+          </div>
+          <div class="life-check" aria-hidden="true">✓</div>
+        </div>
+
+        <!-- Stage 4 -->
+        <div class="lifecycle-card" id="life-card-4" data-stage="4">
+          <div class="card-ring-wrapper">
+            <div class="ring-vfx-circle ring-green"></div>
+            <span class="ring-step-num">4</span>
+          </div>
+          <div class="life-content">
+            <h3 class="life-title">4. service()</h3>
+            <span class="life-freq-badge freq-every">EVERY REQUEST</span>
+            <p class="life-desc">Tomcat allocates a lightweight thread and calls <code>service(request, response)</code> for every single visitor!</p>
+          </div>
+          <div class="life-check" aria-hidden="true">✓</div>
+        </div>
+
+        <!-- Stage 5 -->
+        <div class="lifecycle-card" id="life-card-5" data-stage="5">
+          <div class="card-ring-wrapper">
+            <div class="ring-vfx-circle ring-blue"></div>
+            <span class="ring-step-num">5</span>
+          </div>
+          <div class="life-content">
+            <h3 class="life-title">5. doGet() / doPost()</h3>
+            <span class="life-freq-badge freq-every">EVERY REQUEST</span>
+            <p class="life-desc">The specific HTTP worker method you wrote executes, reads input, and writes the output stream.</p>
+          </div>
+          <div class="life-check" aria-hidden="true">✓</div>
+        </div>
+
+        <!-- Stage 6 -->
+        <div class="lifecycle-card" id="life-card-6" data-stage="6">
+          <div class="card-ring-wrapper">
+            <div class="ring-vfx-circle ring-red"></div>
+            <span class="ring-step-num">6</span>
+          </div>
+          <div class="life-content">
+            <h3 class="life-title">6. destroy()</h3>
+            <span class="life-freq-badge freq-once">ONCE ON SHUTDOWN</span>
+            <p class="life-desc">Tomcat calls <code>destroy()</code> right before shutting down or reloading to close open database sockets and clean up memory.</p>
+          </div>
+          <div class="life-check" aria-hidden="true">✓</div>
+        </div>
+      </div>
+
+      <!-- Lifecycle Interactive Runner Bar -->
+      <div class="lifecycle-controls-panel">
+        <button id="run-lifecycle-btn" class="btn-run-lifecycle">
+          <span class="icon">✨</span> RUN FULL LIFECYCLE SIMULATION
+        </button>
+        <button id="simulate-second-request-btn" class="btn-sub-action">
+          Simulate 2nd Visitor Request (Watch init() get skipped!)
+        </button>
+        <button id="reset-lifecycle-btn" class="btn-sub-action">
+          Reset Rings
+        </button>
+      </div>
+
+      <!-- Interactive Lifecycle Java Code Connector -->
+      <div class="lifecycle-code-connector">
+        <div class="connector-header">
+          <h4>CLICK A METHOD IN THE CODE TO HIGHLIGHT ITS LIFECYCLE STAGE:</h4>
+        </div>
+        <div class="code-box">
+          <pre><code><span class="token-annotation">@WebServlet</span>(<span class="token-string">"/hello"</span>)
+<span class="token-keyword">public class</span> <span class="token-class">HelloServlet</span> <span class="token-keyword">extends</span> <span class="token-class">HttpServlet</span> {
+
+    <span class="code-method-btn" data-target-stage="3" tabindex="0" role="button" aria-label="Highlight init method">
+    <span class="token-keyword">public void</span> <span class="token-func">init</span>(<span class="token-class">ServletConfig</span> config) <span class="token-keyword">throws</span> <span class="token-class">ServletException</span> {
+        <span class="token-comment">// Runs ONCE when Servlet is born. Setup DB pools here.</span>
+    }
+    </span>
+
+    <span class="code-method-btn" data-target-stage="4" tabindex="0" role="button" aria-label="Highlight service method">
+    <span class="token-keyword">protected void</span> <span class="token-func">service</span>(<span class="token-class">HttpServletRequest</span> req, <span class="token-class">HttpServletResponse</span> res) {
+        <span class="token-comment">// Runs for EVERY visitor. Inspects HTTP method and routes!</span>
+        <span class="token-keyword">super</span>.service(req, res);
+    }
+    </span>
+
+    <span class="code-method-btn" data-target-stage="5" tabindex="0" role="button" aria-label="Highlight doGet method">
+    <span class="token-keyword">protected void</span> <span class="token-func">doGet</span>(<span class="token-class">HttpServletRequest</span> request, <span class="token-class">HttpServletResponse</span> response) {
+        <span class="token-comment">// Runs for EVERY GET request. Your custom logic lives here!</span>
+    }
+    </span>
+
+    <span class="code-method-btn" data-target-stage="6" tabindex="0" role="button" aria-label="Highlight destroy method">
+    <span class="token-keyword">public void</span> <span class="token-func">destroy</span>() {
+        <span class="token-comment">// Runs ONCE before server stops. Close connections & clean memory!</span>
+    }
+    </span>
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="section-next-cta">
+        <button class="btn-advance" data-next="section-get-post">
+          Next Step: Play the GET vs POST Game →
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         SECTION 4: GET VS POST EDUCATIONAL GAME
+         ======================================================== -->
+    <section id="section-get-post" class="learning-section" aria-labelledby="getpost-heading">
+      <div class="section-header">
+        <div class="section-tag"><span class="tag-num">04</span> INTERACTIVE GAME</div>
+        <h2 id="getpost-heading" class="section-title">GET or POST? Choose the Method</h2>
+        <p class="section-subtitle">Test your developer intuition: When should a browser send GET vs POST to your Servlet?</p>
+      </div>
+
+      <div class="game-wrapper">
+        <div class="game-scoreboard">
+          <div class="score-item">
+            <span class="score-label">Current Question:</span>
+            <span id="game-q-index" class="score-val">1 / 8</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">Score:</span>
+            <span id="game-score-display" class="score-val">0 / 8</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">Progress:</span>
+            <div class="progress-bar-track small">
+              <div id="game-progress-fill" class="progress-bar-fill" style="width: 12.5%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="game-card" id="game-scenario-card">
+          <div class="scenario-badge">REAL-WORLD SCENARIO</div>
+          <p id="game-scenario-text" class="scenario-text">
+            "A user enters their secret password on the website login form and clicks Submit."
+          </p>
+
+          <div class="game-buttons">
+            <button id="choice-get-btn" class="btn-game-choice choice-get">
+              <span class="choice-tag">HTTP GET</span>
+              <span class="choice-sub">Data appended in URL query string</span>
+            </button>
+            <button id="choice-post-btn" class="btn-game-choice choice-post">
+              <span class="choice-tag">HTTP POST</span>
+              <span class="choice-sub">Data hidden inside HTTP request body</span>
+            </button>
+          </div>
+
+          <!-- Feedback notification drawer -->
+          <div id="game-feedback-box" class="game-feedback" hidden>
+            <div class="feedback-status" id="game-feedback-status">✓ Correct!</div>
+            <p id="game-feedback-explanation" class="feedback-explanation">
+              Passwords should ALWAYS be sent using POST. GET places credentials directly in the browser URL bar, browser history, and server logs.
+            </p>
+            <button id="game-next-btn" class="btn-game-next">Next Scenario →</button>
+          </div>
+        </div>
+
+        <!-- Summary & Reset -->
+        <div id="game-complete-card" class="game-card complete-card" hidden>
+          <div class="complete-vfx-icon">🏆</div>
+          <h3 class="complete-title">GET vs POST Mastery Complete!</h3>
+          <p id="game-final-score-text" class="complete-score">You scored 8 out of 8!</p>
+          <p class="complete-message">
+            Great job! You now understand the fundamental difference between idempotent data queries (GET) and state-mutating or sensitive payloads (POST).
+          </p>
+          <button id="game-restart-btn" class="btn-hero-primary">Play Again 🔄</button>
+        </div>
+      </div>
+
+      <div class="section-next-cta">
+        <button class="btn-advance" data-next="section-mapping">
+          Next Step: How Does the Server Find My Servlet? →
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         SECTION 5: SERVLET MAPPING SIMULATOR
+         ======================================================== -->
+    <section id="section-mapping" class="learning-section" aria-labelledby="mapping-heading">
+      <div class="section-header">
+        <div class="section-tag"><span class="tag-num">05</span> ROUTING SIMULATOR</div>
+        <h2 id="mapping-heading" class="section-title">Servlet Mapping: How Tomcat Finds Your Code</h2>
+        <p class="section-subtitle">How does an incoming URL path find the exact Java class designed to handle it?</p>
+      </div>
+
+      <div class="mapping-container">
+        <div class="mapping-demo-header">
+          <p>
+            Select a URL path below to see how Tomcat consults its internal routing table (configured via <code>@WebServlet</code> or legacy <code>web.xml</code>) to match it to a Java class:
+          </p>
+          <div class="url-selector-chips">
+            <button class="chip-url active" data-url="/login">/login</button>
+            <button class="chip-url" data-url="/register">/register</button>
+            <button class="chip-url" data-url="/products">/products</button>
+            <button class="chip-url" data-url="/home">/home</button>
+            <button class="chip-url" data-url="/unknown-route">/unknown-route</button>
+          </div>
+        </div>
+
+        <div class="mapping-visual-stage">
+          <div class="map-col map-url-col">
+            <span class="stage-label">INCOMING REQUEST</span>
+            <div class="url-card">
+              <span class="url-badge">URL PATH</span>
+              <strong id="active-mapping-url" class="active-url">/login</strong>
+            </div>
+          </div>
+
+          <div class="map-arrow-path">
+            <div class="animated-path-dot" id="mapping-pulse-dot"></div>
+            <span>Tomcat Router</span>
+            ➔
+          </div>
+
+          <div class="map-col map-registry-col">
+            <span class="stage-label">ROUTING TABLE IN MEMORY</span>
+            <div class="registry-list">
+              <div class="registry-row" id="row-login" data-route="/login">
+                <code>@WebServlet("/login")</code>
+                <span class="match-arrow">➔</span>
+                <span class="mapped-class">LoginServlet.class</span>
+              </div>
+              <div class="registry-row" id="row-register" data-route="/register">
+                <code>@WebServlet("/register")</code>
+                <span class="match-arrow">➔</span>
+                <span class="mapped-class">RegisterServlet.class</span>
+              </div>
+              <div class="registry-row" id="row-products" data-route="/products">
+                <code>@WebServlet("/products")</code>
+                <span class="match-arrow">➔</span>
+                <span class="mapped-class">ProductServlet.class</span>
+              </div>
+              <div class="registry-row" id="row-home" data-route="/home">
+                <code>@WebServlet("/home")</code>
+                <span class="match-arrow">➔</span>
+                <span class="mapped-class">HomeServlet.class</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="map-arrow-path">➔</div>
+
+          <div class="map-col map-result-col">
+            <span class="stage-label">MATCH STATUS</span>
+            <div class="result-badge-card" id="mapping-result-card">
+              <div class="status-icon" id="mapping-status-icon">✓</div>
+              <div class="status-title" id="mapping-status-title">200 MATCH FOUND</div>
+              <div class="status-desc" id="mapping-status-desc">
+                Tomcat dispatches the request to <code>LoginServlet</code>!
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Annotation vs web.xml Comparison -->
+        <div class="mapping-comparison-box">
+          <div class="comp-col">
+            <h4>Modern Way: Java Annotation (Java EE 6+ / Jakarta)</h4>
+            <pre><code><span class="token-annotation">@WebServlet</span>(<span class="token-string">"/login"</span>)
+<span class="token-keyword">public class</span> <span class="token-class">LoginServlet</span> <span class="token-keyword">extends</span> <span class="token-class">HttpServlet</span> {
+    <span class="token-comment">// Clean & concise directly in your Java code!</span>
+}</code></pre>
+          </div>
+          <div class="comp-col">
+            <h4>Classic Way: WEB-INF/web.xml (Deployment Descriptor)</h4>
+            <pre><code><span class="token-tag">&lt;servlet&gt;</span>
+  <span class="token-tag">&lt;servlet-name&gt;</span>LoginServlet<span class="token-tag">&lt;/servlet-name&gt;</span>
+  <span class="token-tag">&lt;servlet-class&gt;</span>com.app.LoginServlet<span class="token-tag">&lt;/servlet-class&gt;</span>
+<span class="token-tag">&lt;/servlet&gt;</span>
+<span class="token-tag">&lt;servlet-mapping&gt;</span>
+  <span class="token-tag">&lt;servlet-name&gt;</span>LoginServlet<span class="token-tag">&lt;/servlet-name&gt;</span>
+  <span class="token-tag">&lt;url-pattern&gt;</span>/login<span class="token-tag">&lt;/url-pattern&gt;</span>
+<span class="token-tag">&lt;/servlet-mapping&gt;</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-next-cta">
+        <button class="btn-advance" data-next="section-session">
+          Next Step: Explore Sessions & Cookies Lab →
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         SECTION 6: SESSION & COOKIES LAB
+         ======================================================== -->
+    <section id="section-session" class="learning-section" aria-labelledby="session-heading">
+      <div class="section-header">
+        <div class="section-tag"><span class="tag-num">06</span> STATE LAB</div>
+        <h2 id="session-heading" class="section-title">Session & Cookie Interactive Lab</h2>
+        <p class="section-subtitle">HTTP is stateless. How do Servlets remember who you are when you move between pages?</p>
+      </div>
+
+      <div class="session-lab-container">
+        <!-- Interactive Controls -->
+        <div class="lab-controls">
+          <div class="controls-desc">
+            <strong>SIMULATE SESSION ACTIONS:</strong> Click below to manage the visitor's state in server memory:
+          </div>
+          <div class="button-row">
+            <button id="lab-create-session-btn" class="btn-lab-action">
+              <span>🎟️</span> 1. CREATE SESSION
+            </button>
+            <button id="lab-set-attr-btn" class="btn-lab-action" disabled>
+              <span>💾</span> 2. SET ATTRIBUTE (username)
+            </button>
+            <button id="lab-read-attr-btn" class="btn-lab-action" disabled>
+              <span>🔍</span> 3. READ ATTRIBUTE
+            </button>
+            <button id="lab-invalidate-btn" class="btn-lab-action btn-danger" disabled>
+              <span>❌</span> 4. INVALIDATE (Logout)
+            </button>
+          </div>
+        </div>
+
+        <!-- Dual-Sided Visual Lab -->
+        <div class="lab-visual-stage">
+          <!-- Left: Browser Cookie Store -->
+          <div class="lab-side browser-side">
+            <div class="side-header">
+              <span class="side-icon">🌐</span>
+              <h4>CLIENT BROWSER (Cookie Jar)</h4>
+            </div>
+            <div class="side-content">
+              <div class="cookie-card" id="lab-cookie-card">
+                <div class="cookie-status-label" id="cookie-status-label">No Cookie Stored</div>
+                <div class="cookie-details" id="cookie-details" hidden>
+                  <div class="kv-item">
+                    <span class="kv-key">Cookie Name:</span>
+                    <strong class="kv-val">JSESSIONID</strong>
+                  </div>
+                  <div class="kv-item">
+                    <span class="kv-key">Token Value:</span>
+                    <strong class="kv-val" id="cookie-val-text">A9B87F139C</strong>
+                  </div>
+                  <div class="kv-item">
+                    <span class="kv-key">Scope:</span>
+                    <span class="kv-val">HttpOnly, Secure</span>
+                  </div>
+                </div>
+              </div>
+              <p class="side-note">
+                💡 <strong>The Ticket:</strong> The browser only stores a random ID number called <code>JSESSIONID</code>. No passwords or secret data belong in cookies!
+              </p>
+            </div>
+          </div>
+
+          <!-- Center: Network Bridge -->
+          <div class="lab-bridge">
+            <div class="bridge-arrow arrow-forward">
+              <span>HTTP Request + Cookie</span>
+              ➔
+            </div>
+            <div class="bridge-ticket-icon">🎟️</div>
+            <div class="bridge-arrow arrow-backward">
+              ⇠
+              <span>Set-Cookie Header</span>
+            </div>
+          </div>
+
+          <!-- Right: Server Memory HttpSession -->
+          <div class="lab-side server-side">
+            <div class="side-header">
+              <span class="side-icon">⚙️</span>
+              <h4>APACHE TOMCAT (Server RAM)</h4>
+            </div>
+            <div class="side-content">
+              <div class="session-card" id="lab-session-card">
+                <div class="session-status-label" id="session-status-label">No Active Session</div>
+                <div class="session-details" id="session-details" hidden>
+                  <div class="kv-item">
+                    <span class="kv-key">Session ID:</span>
+                    <strong class="kv-val" id="session-id-text">A9B87F139C</strong>
+                  </div>
+                  <div class="session-attr-box">
+                    <span class="attr-title">Session Attributes Map:</span>
+                    <div id="session-attr-list" class="attr-list">
+                      <span class="empty-attr">No attributes saved yet</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="side-note">
+                💡 <strong>The Locker:</strong> The server stores the actual heavy user object in RAM: <code>session.setAttribute("user", userObj)</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Concept Analogy Box -->
+        <div class="lab-analogy-box">
+          <div class="analogy-badge">THE COAT CHECK ANALOGY</div>
+          <p>
+            Imagine checking your heavy winter coat at a museum. The staff gives you a small plastic ticket with number <strong>#42</strong>.
+            You walk around with only the ticket (<strong>the Cookie</strong>). Your actual heavy coat stays safely in the museum's locked storage room (<strong>the Server Session</strong>). Whenever you want your coat, you show ticket #42!
+          </p>
+        </div>
+      </div>
+
+      <div class="section-next-cta">
+        <button class="btn-advance" data-next="section-jsp">
+          Next Step: Compare JSP vs Servlet →
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         SECTION 7: JSP VS SERVLET
+         ======================================================== -->
+    <section id="section-jsp" class="learning-section" aria-labelledby="jsp-heading">
+      <div class="section-header">
+        <div class="section-tag"><span class="tag-num">07</span> ARCHITECTURE</div>
+        <h2 id="jsp-heading" class="section-title">JSP vs Servlet: Where Does Each Belong?</h2>
+        <p class="section-subtitle">Why do we have both, and how do they collaborate in modern MVC web architectures?</p>
+      </div>
+
+      <div class="jsp-container">
+        <!-- Side by side cards -->
+        <div class="jsp-cards-grid">
+          <!-- Servlet Card -->
+          <div class="jsp-card card-servlet">
+            <div class="jsp-head">
+              <span class="jsp-icon">☕</span>
+              <h3>SERVLET</h3>
+              <span class="role-pill">The Controller (Brain)</span>
+            </div>
+            <ul class="jsp-traits">
+              <li><strong>What is it?</strong> Pure Java code that generates HTML.</li>
+              <li><strong>Best for:</strong> Business logic, handling inputs, authentication, database routing.</li>
+              <li><strong>Drawback:</strong> Writing HTML inside <code>out.println("&lt;div&gt;&lt;h1&gt;...")</code> is messy and error-prone!</li>
+            </ul>
+          </div>
+
+          <!-- JSP Card -->
+          <div class="jsp-card card-jsp">
+            <div class="jsp-head">
+              <span class="jsp-icon">📄</span>
+              <h3>JSP (JavaServer Pages)</h3>
+              <span class="role-pill">The View (Presentation)</span>
+            </div>
+            <ul class="jsp-traits">
+              <li><strong>What is it?</strong> HTML template containing embedded Java tags or EL <code>${user.name}</code>.</li>
+              <li><strong>Best for:</strong> Designing beautiful web pages, tables, styling, and visual layout.</li>
+              <li><strong>Drawback:</strong> Writing complex calculations and database calls inside HTML creates spaghetti code!</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- The Solution: MVC Pattern Diagram -->
+        <div class="mvc-solution-card">
+          <div class="mvc-badge">THE WINNING COMBINATION: MODEL-VIEW-CONTROLLER (MVC)</div>
+          <div class="mvc-flow">
+            <div class="mvc-step">
+              <span class="step-num">1</span>
+              <strong>Browser Request</strong>
+              <span>Visits <code>/dashboard</code></span>
+            </div>
+            <span class="mvc-arrow">➔</span>
+            <div class="mvc-step highlight">
+              <span class="step-num">2</span>
+              <strong>Servlet (Controller)</strong>
+              <span>Computes math, queries DB</span>
+            </div>
+            <span class="mvc-arrow">➔</span>
+            <div class="mvc-step">
+              <span class="step-num">3</span>
+              <strong>RequestDispatcher</strong>
+              <span><code>forward(request, response)</code></span>
+            </div>
+            <span class="mvc-arrow">➔</span>
+            <div class="mvc-step highlight">
+              <span class="step-num">4</span>
+              <strong>JSP (View)</strong>
+              <span>Renders HTML with <code>${data}</code></span>
+            </div>
+            <span class="mvc-arrow">➔</span>
+            <div class="mvc-step">
+              <span class="step-num">5</span>
+              <strong>HTML to Browser</strong>
+              <span>Clean, formatted web page</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-next-cta">
+        <button class="btn-advance" data-next="section-jdbc">
+          Next Step: How Servlets Connect to Databases with JDBC →
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         SECTION 8: SERVLET + JDBC
+         ======================================================== -->
+    <section id="section-jdbc" class="learning-section" aria-labelledby="jdbc-heading">
+      <div class="section-header">
+        <div class="section-tag"><span class="tag-num">08</span> DATABASE INTEGRATION</div>
+        <h2 id="jdbc-heading" class="section-title">Where Does JDBC Fit in a Servlet App?</h2>
+        <p class="section-subtitle">Servlets handle web traffic; JDBC communicates with relational databases like MySQL.</p>
+      </div>
+
+      <div class="jdbc-container">
+        <!-- 5-Tier Diagram -->
+        <div class="jdbc-pipeline">
+          <div class="tier-node">
+            <span class="tier-icon">🌐</span>
+            <strong>Browser</strong>
+            <span>HTTP Request</span>
+          </div>
+          <span class="tier-arrow">➔</span>
+          <div class="tier-node highlight-servlet">
+            <span class="tier-icon">☕</span>
+            <strong>Servlet</strong>
+            <span>Controller / API</span>
+          </div>
+          <span class="tier-arrow">➔</span>
+          <div class="tier-node">
+            <span class="tier-icon">⚙️</span>
+            <strong>Service / DAO</strong>
+            <span>Business Logic</span>
+          </div>
+          <span class="tier-arrow">➔</span>
+          <div class="tier-node highlight-jdbc">
+            <span class="tier-icon">🔌</span>
+            <strong>JDBC Driver</strong>
+            <span>SQL Connection</span>
+          </div>
+          <span class="tier-arrow">➔</span>
+          <div class="tier-node highlight-db">
+            <span class="tier-icon">🗄️</span>
+            <strong>Database</strong>
+            <span>MySQL / PostgreSQL</span>
+          </div>
+        </div>
+
+        <!-- Interactive Simulated Query Box -->
+        <div class="jdbc-simulator">
+          <div class="sim-header">
+            <h4>SIMULATED QUERY EXECUTION</h4>
+            <span class="sim-notice">Simulated Database: Educational Visualization</span>
+          </div>
+
+          <div class="sim-body">
+            <div class="sim-query-selector">
+              <label for="jdbc-query-select">Select a Business Operation:</label>
+              <select id="jdbc-query-select" class="form-control">
+                <option value="user">Find User by ID: SELECT * FROM users WHERE id = 101</option>
+                <option value="products">Fetch Catalog: SELECT * FROM products ORDER BY price</option>
+                <option value="orders">Recent Orders: SELECT * FROM orders WHERE status = 'COMPLETED'</option>
+              </select>
+              <button id="run-jdbc-sim-btn" class="btn-hero-primary small-btn">Execute JDBC Flow ⚡</button>
+            </div>
+
+            <div class="sim-terminal">
+              <pre><code id="jdbc-terminal-output">// Click "Execute JDBC Flow" to see how Connection, PreparedStatement,
+// and ResultSet objects interact with the Servlet!</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-next-cta">
+        <button class="btn-advance" data-next="section-code-explorer">
+          Next Step: Interactive Java Code Explorer →
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         SECTION 9: INTERACTIVE JAVA CODE EXPLORER
+         ======================================================== -->
+    <section id="section-code-explorer" class="learning-section" aria-labelledby="code-heading">
+      <div class="section-header">
+        <div class="section-tag"><span class="tag-num">09</span> CODE EXPLORER</div>
+        <h2 id="code-heading" class="section-title">Anatomy of a Real Java Servlet</h2>
+        <p class="section-subtitle">Click on any keyword, annotation, or parameter in the code below to see its exact role.</p>
+      </div>
+
+      <div class="code-explorer-layout">
+        <!-- Left: Clickable Code View -->
+        <div class="code-view-container">
+          <div class="code-bar">
+            <div class="file-name">📄 HelloServlet.java</div>
+            <span class="badge-hint">Click any glowing keyword!</span>
+          </div>
+          <div class="code-content">
+            <pre><code><span class="code-token" data-token="annotation" tabindex="0" role="button" aria-label="Annotation @WebServlet">@WebServlet("/hello")</span>
+<span class="token-keyword">public class</span> <span class="token-class">HelloServlet</span> <span class="token-keyword">extends</span> <span class="code-token" data-token="httpservlet" tabindex="0" role="button" aria-label="HttpServlet class">HttpServlet</span> {
+
+    <span class="token-annotation">@Override</span>
+    <span class="token-keyword">protected void</span> <span class="code-token" data-token="doget" tabindex="0" role="button" aria-label="doGet method">doGet</span>(
+        <span class="code-token" data-token="request" tabindex="0" role="button" aria-label="HttpServletRequest parameter">HttpServletRequest request</span>,
+        <span class="code-token" data-token="response" tabindex="0" role="button" aria-label="HttpServletResponse parameter">HttpServletResponse response</span>)
+        <span class="token-keyword">throws</span> <span class="token-class">ServletException</span>, <span class="token-class">IOException</span> {
+
+        <span class="token-comment">// 1. Set response content type to HTML</span>
+        <span class="code-token" data-token="contenttype" tabindex="0" role="button" aria-label="setContentType method">response.setContentType("text/html");</span>
+
+        <span class="token-comment">// 2. Read query parameter from URL (?name=...)</span>
+        <span class="token-class">String</span> userName = <span class="code-token" data-token="getparameter" tabindex="0" role="button" aria-label="getParameter method">request.getParameter("name");</span>
+
+        <span class="token-comment">// 3. Get output writer to stream HTML to browser</span>
+        <span class="token-class">PrintWriter</span> out = <span class="code-token" data-token="getwriter" tabindex="0" role="button" aria-label="getWriter method">response.getWriter();</span>
+
+        <span class="token-comment">// 4. Print response body</span>
+        out.println(<span class="token-string">"&lt;h1&gt;Hello, "</span> + userName + <span class="token-string">"!&lt;/h1&gt;"</span>);
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Right: Dynamic Deep-Dive Drawer -->
+        <div class="token-inspector-card" id="token-inspector-card">
+          <div class="inspector-badge" id="token-badge">CODE INSPECTION</div>
+          <h3 class="inspector-token-title" id="token-title">Click a keyword to inspect</h3>
+          <div class="inspector-token-desc" id="token-desc">
+            Try clicking <code>@WebServlet</code>, <code>HttpServlet</code>, <code>doGet</code>, or <code>getParameter</code> to learn what they do in plain English!
+          </div>
+          <div class="inspector-extra" id="token-extra">
+            <span class="extra-label">💡 Beginner Tip:</span>
+            <span>Every method in a Servlet receives both the incoming <code>request</code> and outgoing <code>response</code> as arguments.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mini Login Simulation Card -->
+      <div class="mini-login-simulator">
+        <div class="sim-header">
+          <h4>🧪 MINI LOGIN SIMULATION (Simulated POST Flow)</h4>
+          <span class="sim-tag">Test request.getParameter() in action!</span>
+        </div>
+        <div class="login-sim-grid">
+          <form id="mini-login-form" class="mini-login-form" onsubmit="return false;">
+            <div class="form-group">
+              <label for="login-username">Username:</label>
+              <input type="text" id="login-username" class="form-control" value="admin" required>
+            </div>
+            <div class="form-group">
+              <label for="login-password">Password:</label>
+              <input type="password" id="login-password" class="form-control" value="secret123" required>
+            </div>
+            <button type="submit" id="btn-submit-login" class="btn-hero-primary small-btn">
+              Simulate POST /login 🚀
+            </button>
+            <div class="quick-credentials">
+              <span>Demo Presets:</span>
+              <button type="button" class="btn-chip-text" id="btn-preset-valid">Valid: admin / secret123</button>
+              <button type="button" class="btn-chip-text" id="btn-preset-invalid">Invalid: hacker / wrong</button>
+            </div>
+          </form>
+
+          <div class="login-sim-result" id="login-sim-result">
+            <div class="result-placeholder">
+              Submit the form to watch the simulated POST request flow through <code>LoginServlet</code>!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-next-cta">
+        <button class="btn-advance" data-next="section-challenges">
+          Next Step: Take the Final Challenges & Earn Badges →
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         SECTION 10: CHALLENGES & FINAL LAB
+         ======================================================== -->
+    <section id="section-challenges" class="learning-section" aria-labelledby="challenges-heading">
+      <div class="section-header">
+        <div class="section-tag"><span class="tag-num">10</span> PRACTICE LAB</div>
+        <h2 id="challenges-heading" class="section-title">The Master Servlet Challenges</h2>
+        <p class="section-subtitle">Put your understanding to the test. Build the correct flow and solve real-world architectural scenarios.</p>
+      </div>
+
+      <!-- CHALLENGE 1: FLOW BUILDER (DRAG & DROP + ACCESSIBLE CLICK/KEYBOARD) -->
+      <div class="challenge-box">
+        <div class="challenge-header">
+          <span class="ch-badge">CHALLENGE 1</span>
+          <h3>Reorder the Servlet Request Flow</h3>
+          <p>
+            Arrange the 10 blocks in the exact order an HTTP request travels from the browser to the Servlet and back.
+            <strong>Use Drag & Drop OR the accessible Move Up / Move Down buttons!</strong>
+          </p>
+        </div>
+
+        <div class="flow-builder-arena">
+          <div class="flow-blocks-list" id="flow-blocks-container" role="list" aria-label="Reorderable Servlet Flow Blocks">
+            <!-- Dynamically populated with accessible items -->
+          </div>
+
+          <div class="flow-builder-actions">
+            <button id="verify-flow-btn" class="btn-hero-primary">
+              <span class="icon">🔍</span> VERIFY FLOW ORDER
+            </button>
+            <button id="shuffle-flow-btn" class="btn-sub-action">
+              Shuffle / Reset
+            </button>
+            <span id="flow-verification-msg" class="verification-msg" role="status"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHALLENGE 2: SCENARIO QUIZ -->
+      <div class="challenge-box scenario-quiz-box">
+        <div class="challenge-header">
+          <span class="ch-badge">CHALLENGE 2</span>
+          <h3>Scenario Challenges: What Happens Next?</h3>
+          <p>Read the real-world architectural scenarios and select the correct outcome.</p>
+        </div>
+
+        <div class="scenario-quiz-arena" id="scenario-quiz-arena">
+          <div class="quiz-q-indicator">
+            <span id="quiz-curr-q-text">Scenario Question 1 of 6</span>
+          </div>
+          <div class="scenario-question-card" id="quiz-card">
+            <h4 id="quiz-question-title" class="q-title">Loading scenario...</h4>
+            <div class="quiz-options-list" id="quiz-options-list">
+              <!-- Dynamically populated options -->
+            </div>
+            <div id="quiz-feedback-box" class="quiz-feedback" hidden>
+              <div id="quiz-feedback-status"></div>
+              <p id="quiz-feedback-desc"></p>
+              <button id="quiz-next-q-btn" class="btn-hero-primary small-btn">Next Scenario →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FINAL COMPLETION SCREEN -->
+      <div id="final-completion-view" class="final-completion-card" hidden>
+        <div class="portal-celebration-wrap">
+          <img src="assets/images/achievement-portal.png" alt="Glowing portal of mastery" class="portal-img">
+        </div>
+        <h2 class="final-heading">🎉 SERVLET JOURNEY COMPLETE!</h2>
+        <p class="final-sub">
+          You now understand how a browser request travels through a Java Servlet!
+        </p>
+
+        <div class="final-stats-grid">
+          <div class="stat-box">
+            <span class="stat-number" id="final-stat-concepts">10 / 10</span>
+            <span class="stat-label">Milestones Explored</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number" id="final-stat-quizzes">100%</span>
+            <span class="stat-label">Quiz Accuracy</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number" id="final-stat-badges">6 / 6</span>
+            <span class="stat-label">Badges Unlocked</span>
+          </div>
+        </div>
+
+        <div class="final-actions">
+          <button id="btn-replay-journey" class="btn-hero-primary">
+            🔄 Replay Journey
+          </button>
+          <a href="#section-request-response" class="btn-hero-secondary">
+            ⚡ Explore Request Simulation Again
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================
+       MODALS & ACCESSIBLE DIALOGS
+       ======================================================== -->
+
+  <!-- Architecture Node Details Modal -->
+  <dialog id="node-info-dialog" class="accessible-dialog" aria-labelledby="dialog-node-title">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <div class="dialog-icon" id="dialog-node-icon">⚙️</div>
+        <div class="dialog-headings">
+          <span class="dialog-subtitle" id="dialog-node-role">Architecture Layer</span>
+          <h3 id="dialog-node-title">Servlet Container</h3>
+        </div>
+        <button id="close-node-dialog" class="btn-dialog-close" aria-label="Close dialog">✕</button>
+      </div>
+      <div class="dialog-body">
+        <div class="dialog-section">
+          <h4>WHAT IS IT?</h4>
+          <p id="dialog-what-is"></p>
+        </div>
+        <div class="dialog-section">
+          <h4>WHY DO WE USE IT?</h4>
+          <p id="dialog-why"></p>
+        </div>
+        <div class="dialog-section">
+          <h4>WHAT HAPPENS HERE?</h4>
+          <p id="dialog-what-happens"></p>
+        </div>
+        <div class="dialog-section highlight-sec">
+          <h4>REAL-WORLD EXAMPLE:</h4>
+          <p id="dialog-example"></p>
+        </div>
+      </div>
+      <div class="dialog-footer">
+        <button id="dialog-dismiss-btn" class="btn-hero-secondary small-btn">Close (Esc)</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Global Concept Search Dialog (Ctrl+K) -->
+  <dialog id="search-dialog" class="accessible-dialog search-modal" aria-labelledby="search-modal-title">
+    <div class="dialog-content search-modal-content">
+      <div class="search-modal-header">
+        <h3 id="search-modal-title" class="sr-only">Search Servlet Concepts</h3>
+        <div class="search-input-wrapper">
+          <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="concept-search-input" class="search-input-field" placeholder="Search Servlet, Tomcat, doGet, session, filter..." autocomplete="off">
+          <kbd class="esc-kbd">ESC</kbd>
+        </div>
+      </div>
+      <div class="search-results-list" id="search-results-list" role="listbox">
+        <!-- Dynamically populated results -->
+      </div>
+    </div>
+  </dialog>
+
+  <!-- How to Use This Project Guide Modal -->
+  <dialog id="guide-dialog" class="accessible-dialog guide-modal" aria-labelledby="guide-dialog-title">
+    <div class="dialog-content guide-modal-content">
+      <div class="dialog-header">
+        <div class="dialog-icon">📖</div>
+        <div class="dialog-headings">
+          <span class="dialog-subtitle">USER GUIDE & WALKTHROUGH</span>
+          <h3 id="guide-dialog-title">How to Master Java Servlets</h3>
+        </div>
+        <button id="close-guide-dialog" class="btn-dialog-close" aria-label="Close user guide dialog">✕</button>
+      </div>
+      <div class="dialog-body guide-body">
+        <p class="guide-lead">
+          Welcome to the <strong>Java Servlet Interactive Explorer</strong>! This application simulates real server-side Java architecture visually so you can learn with confidence. Here is how to make the most of every feature:
+        </p>
+
+        <div class="guide-steps-grid">
+          <div class="guide-step-card">
+            <div class="guide-card-icon">🚀</div>
+            <h4>1. Starting & Navigating</h4>
+            <p>
+              Click <strong>START SERVLET JOURNEY</strong> to jump to Section 01. Use the sticky progress stepper at the top or the <strong>Next Step →</strong> buttons at the bottom of each section to progress through all 10 milestones.
+            </p>
+          </div>
+
+          <div class="guide-step-card">
+            <div class="guide-card-icon">⚡</div>
+            <h4>2. Request / Response Flow (Section 02)</h4>
+            <p>
+              Configure HTTP Method (<code>GET</code>/<code>POST</code>), URL route (e.g. <code>/hello</code>), and parameters. Click <strong>SEND REQUEST</strong> to watch the energy packet navigate through all 10 layers of Tomcat and return. Click any architecture node for a detailed explanation!
+            </p>
+          </div>
+
+          <div class="guide-step-card">
+            <div class="guide-card-icon">🔄</div>
+            <h4>3. Lifecycle Simulation (Section 03)</h4>
+            <p>
+              Click <strong>RUN FULL LIFECYCLE SIMULATION</strong> to watch the 6 stages activate in sequence. Then click <strong>Simulate 2nd Visitor Request</strong> to see the core takeaway: <code>init()</code> runs only once; subsequent requests jump straight to <code>service()</code>!
+            </p>
+          </div>
+
+          <div class="guide-step-card">
+            <div class="guide-card-icon">🎮</div>
+            <h4>4. Games & Mini-Labs (Sections 04–09)</h4>
+            <p>
+              Play the <strong>GET vs POST Game</strong> (8 real scenarios), test URL routing in the <strong>Mapping Simulator</strong>, manage state in the <strong>Session Lab</strong> (coat-check ticket analogy), run simulated SQL in <strong>JDBC Flow</strong>, and test credentials in the <strong>Mini Login Simulator</strong>.
+            </p>
+          </div>
+
+          <div class="guide-step-card">
+            <div class="guide-card-icon">🏆</div>
+            <h4>5. Challenges & Badges (Section 10)</h4>
+            <p>
+              Reorder the 10 architecture blocks using Drag-and-Drop or the accessible <strong>▲ Move Up / ▼ Move Down</strong> buttons. Complete the Scenario Quiz to unlock all 6 achievement trophies!
+            </p>
+          </div>
+
+          <div class="guide-step-card">
+            <div class="guide-card-icon">⚙️</div>
+            <h4>6. Audio, Motion & Preferences</h4>
+            <p>
+              <strong>Sound & Volume:</strong> Toggle audio ON/OFF and adjust the volume slider in the top bar anytime. Sound OFF mutes all effects.<br>
+              <strong>Reduce Motion:</strong> Toggle Motion to "Reduced" (or system prefers-reduced-motion) to disable energy walls and particle effects while preserving all educational features.<br>
+              <strong>Beginner Mode:</strong> Toggle ON/OFF to switch between friendly everyday analogies and formal Jakarta EE specifications.<br>
+              <strong>Concept Search:</strong> Press <kbd>Ctrl+K</kbd> or <kbd>/</kbd> to jump straight to any concept across all sections.<br>
+              <strong>Progress Persistence:</strong> All scores, section milestones, and unlocked achievements are saved automatically to your browser's <code>localStorage</code>. Click the Reset button (circular arrow) in the top bar to restart fresh.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="dialog-footer">
+        <button id="guide-dismiss-btn" class="btn-hero-secondary small-btn">Close (Esc)</button>
+        <button id="guide-start-btn" class="btn-hero-primary small-btn">Start Learning Journey →</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Achievements Drawer / Modal -->
+  <dialog id="achievements-dialog" class="accessible-dialog" aria-labelledby="achievements-dialog-title">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <div class="dialog-icon">🏆</div>
+        <div class="dialog-headings">
+          <span class="dialog-subtitle">LEARNING REWARDS</span>
+          <h3 id="achievements-dialog-title">Your Unlocked Achievements</h3>
+        </div>
+        <button id="close-achievements-dialog" class="btn-dialog-close" aria-label="Close dialog">✕</button>
+      </div>
+      <div class="dialog-body achievements-grid" id="achievements-list">
+        <!-- Dynamically rendered badges -->
+      </div>
+      <div class="dialog-footer">
+        <button id="dismiss-achievements-btn" class="btn-hero-secondary small-btn">Close</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Achievement Celebration Toast / Popup -->
+  <aside id="achievement-toast" class="achievement-toast" role="status" aria-live="polite" hidden>
+    <div class="toast-vfx-ring"></div>
+    <div class="toast-icon">🏆</div>
+    <div class="toast-info">
+      <span class="toast-tag">ACHIEVEMENT UNLOCKED!</span>
+      <strong id="toast-title" class="toast-title">Request Master</strong>
+      <span id="toast-desc" class="toast-desc">Successfully dispatched an HTTP request flow!</span>
+    </div>
+  </aside>
+
+  <!-- Screen Reader Live Announcements -->
+  <div id="sr-announcements" class="sr-only" aria-live="assertive" role="status"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="script.js"></script>
+</body>
+</html>
